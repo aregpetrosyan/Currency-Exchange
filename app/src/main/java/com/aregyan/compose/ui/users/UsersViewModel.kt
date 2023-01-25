@@ -25,19 +25,13 @@ class UsersViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             val exchangeRates = exchangeRatesRepository.fetchExchangeRates()
-//            usersRepository.refreshUsers()
-//            usersRepository.users.collect { list ->
-//                withContext(Dispatchers.Main) {
-//                    uiState = if (list.isNullOrEmpty()) {
-//                        uiState.copy(offline = true)
-//                    } else {
-//                        uiState.copy(
-//                            list = list,
-//                            offline = false
-//                        )
-//                    }
-//                }
-//            }
+            withContext(Dispatchers.Main) {
+                uiState = if (exchangeRates == null) {
+                    uiState.copy(offline = true)
+                } else {
+                    uiState.copy(currencyList = exchangeRates.rates.map { it.key })
+                }
+            }
         }
     }
 

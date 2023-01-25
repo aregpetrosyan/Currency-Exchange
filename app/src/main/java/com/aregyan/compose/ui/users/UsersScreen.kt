@@ -2,6 +2,8 @@ package com.aregyan.compose.ui.users
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -42,18 +44,33 @@ fun UsersScreen(
                 )
             }
             Header(text = stringResource(id = R.string.my_balances).uppercase())
+            LazyRow {
+                items(items = uiState.currencyList) {
+                    LazyRowItem(balance = 0.00, currency = it)
+                }
+            }
             Header(text = stringResource(id = R.string.currency_exchange).uppercase())
         }
     }
 }
 
 @Composable
-fun Header(
+private fun Header(
     text: String,
 ) {
     Text(
         modifier = Modifier.padding(16.dp),
         text = text,
+        style = MaterialTheme.typography.subtitle2,
+        color = MaterialTheme.colors.onBackground
+    )
+}
+
+@Composable
+private fun LazyRowItem(balance: Double, currency: String) {
+    Text(
+        modifier = Modifier.padding(16.dp),
+        text = "$balance $currency",
         style = MaterialTheme.typography.subtitle2,
         color = MaterialTheme.colors.onBackground
     )
