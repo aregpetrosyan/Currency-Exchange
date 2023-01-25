@@ -24,9 +24,8 @@ class UsersViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-
             exchangeRatesRepository.fetchExchangeRates()
-
+            exchangeRatesRepository.exchangeRates
 //            usersRepository.refreshUsers()
 //            usersRepository.users.collect { list ->
 //                withContext(Dispatchers.Main) {
