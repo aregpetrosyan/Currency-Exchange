@@ -5,14 +5,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -84,12 +87,13 @@ private fun BalanceRowItem(balance: Double, currency: String) {
 
 @Composable
 private fun ExchangeColumnItem() {
+    var sumValue by remember { mutableStateOf("0.00") }
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
-        val (icon, action, sum, currency, line) = createRefs()
+        val (icon, action, sum, picker, line) = createRefs()
         Icon(
             modifier = Modifier
                 .constrainAs(icon) {
@@ -115,6 +119,36 @@ private fun ExchangeColumnItem() {
             text = stringResource(id = R.string.sell),
             style = MaterialTheme.typography.subtitle2,
             color = MaterialTheme.colors.onBackground
+        )
+        Row(modifier = Modifier
+            .constrainAs(picker) {
+                top.linkTo(parent.top)
+                end.linkTo(parent.end)
+                bottom.linkTo(parent.bottom)
+            }) {
+            Text(
+                modifier = Modifier
+                    .padding(end = 2.dp),
+                text = "EUR",
+                style = MaterialTheme.typography.subtitle2,
+                color = MaterialTheme.colors.onBackground
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_keyboard_arrow_down_24),
+                tint = MaterialTheme.colors.onBackground,
+                contentDescription = null
+            )
+        }
+        BasicTextField(
+            modifier = Modifier
+                .constrainAs(sum) {
+                    top.linkTo(parent.top)
+                    end.linkTo(picker.start)
+                    bottom.linkTo(parent.bottom)
+                },
+            value = sumValue,
+            onValueChange = { sumValue = it },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword)
         )
     }
 }
