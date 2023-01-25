@@ -7,10 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,6 +59,9 @@ fun UsersScreen(
             }
             Header(text = stringResource(id = R.string.currency_exchange).uppercase())
             ExchangeColumnItem()
+            Divider(
+                modifier = Modifier.padding(start = 72.dp)
+            )
         }
     }
 }
@@ -94,9 +94,10 @@ private fun ExchangeColumnItem() {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
+            .height(60.dp)
             .padding(horizontal = 16.dp)
     ) {
-        val (icon, action, sum, picker, line) = createRefs()
+        val (icon, action, sum, picker) = createRefs()
         Icon(
             modifier = Modifier
                 .constrainAs(icon) {
@@ -104,7 +105,7 @@ private fun ExchangeColumnItem() {
                     start.linkTo(parent.start)
                     bottom.linkTo(parent.bottom)
                 }
-                .size(48.dp)
+                .size(40.dp)
                 .background(Red, CircleShape)
                 .padding(8.dp),
             painter = painterResource(id = R.drawable.baseline_arrow_upward_24),
