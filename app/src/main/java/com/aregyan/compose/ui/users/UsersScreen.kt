@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -16,8 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aregyan.compose.R
 import com.aregyan.compose.ui.components.NoNetwork
@@ -120,12 +123,14 @@ private fun ExchangeColumnItem() {
             style = MaterialTheme.typography.subtitle2,
             color = MaterialTheme.colors.onBackground
         )
-        Row(modifier = Modifier
-            .constrainAs(picker) {
+        Row(
+            modifier = Modifier.constrainAs(picker) {
                 top.linkTo(parent.top)
                 end.linkTo(parent.end)
                 bottom.linkTo(parent.bottom)
-            }) {
+            },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 modifier = Modifier
                     .padding(end = 2.dp),
@@ -143,12 +148,16 @@ private fun ExchangeColumnItem() {
             modifier = Modifier
                 .constrainAs(sum) {
                     top.linkTo(parent.top)
-                    end.linkTo(picker.start)
+                    end.linkTo(picker.start, 24.dp)
                     bottom.linkTo(parent.bottom)
+                    start.linkTo(action.end, 24.dp)
+                    width = Dimension.fillToConstraints
                 },
             value = sumValue,
             onValueChange = { sumValue = it },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.End),
+            singleLine = true
         )
     }
 }
