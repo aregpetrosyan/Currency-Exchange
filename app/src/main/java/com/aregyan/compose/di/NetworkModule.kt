@@ -2,6 +2,7 @@ package com.aregyan.compose.di
 
 import com.aregyan.compose.BuildConfig
 import com.aregyan.compose.network.DetailsApi
+import com.aregyan.compose.network.ExchangeRatesApi
 import com.aregyan.compose.network.UsersApi
 import dagger.Module
 import dagger.Provides
@@ -35,7 +36,7 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .addConverterFactory(MoshiConverterFactory.create())
-        .baseUrl("https://api.github.com/")
+        .baseUrl("https://developers.paysera.com/")
         .client(okHttpClient)
         .build()
 
@@ -48,5 +49,10 @@ object NetworkModule {
     @Singleton
     fun provideUserDetailsService(retrofit: Retrofit): DetailsApi =
         retrofit.create(DetailsApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideExchangeRatesService(retrofit: Retrofit): ExchangeRatesApi =
+        retrofit.create(ExchangeRatesApi::class.java)
 
 }
