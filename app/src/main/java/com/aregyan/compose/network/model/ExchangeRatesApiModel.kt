@@ -11,5 +11,5 @@ data class ExchangeRatesApiModel(
     @Json(name = "date")
     val date: String,
     @Json(name = "rates")
-    val rates: RatesApiModel
+    val rates: Map<String, Double>
 )
