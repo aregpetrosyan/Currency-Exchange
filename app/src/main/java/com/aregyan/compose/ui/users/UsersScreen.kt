@@ -21,6 +21,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aregyan.compose.R
 import com.aregyan.compose.ui.components.NoNetwork
+import com.aregyan.compose.ui.theme.Green
 import com.aregyan.compose.ui.theme.Red
 
 @Composable
@@ -58,10 +59,10 @@ fun UsersScreen(
                 }
             }
             Header(text = stringResource(id = R.string.currency_exchange).uppercase())
-            ExchangeColumnItem()
-            Divider(
-                modifier = Modifier.padding(start = 72.dp)
-            )
+            ExchangeColumnItem(isSell = true)
+            SimpleDivider()
+            ExchangeColumnItem(isSell = false)
+            SimpleDivider()
         }
     }
 }
@@ -89,7 +90,9 @@ private fun BalanceRowItem(balance: Double, currency: String) {
 }
 
 @Composable
-private fun ExchangeColumnItem() {
+private fun ExchangeColumnItem(
+    isSell: Boolean
+) {
     var sumValue by remember { mutableStateOf("0.00") }
     ConstraintLayout(
         modifier = Modifier
@@ -106,9 +109,9 @@ private fun ExchangeColumnItem() {
                     bottom.linkTo(parent.bottom)
                 }
                 .size(40.dp)
-                .background(Red, CircleShape)
+                .background(if (isSell) Red else Green, CircleShape)
                 .padding(8.dp),
-            painter = painterResource(id = R.drawable.baseline_arrow_upward_24),
+            painter = painterResource(id = if (isSell) R.drawable.baseline_arrow_upward_24 else R.drawable.baseline_arrow_downward_24),
             tint = MaterialTheme.colors.background,
             contentDescription = null
         )
@@ -120,7 +123,7 @@ private fun ExchangeColumnItem() {
                     bottom.linkTo(parent.bottom)
                 }
                 .padding(16.dp),
-            text = stringResource(id = R.string.sell),
+            text = stringResource(id = if (isSell) R.string.sell else R.string.receive),
             style = MaterialTheme.typography.subtitle2,
             color = MaterialTheme.colors.onBackground
         )
@@ -161,4 +164,11 @@ private fun ExchangeColumnItem() {
             singleLine = true
         )
     }
+}
+
+@Composable
+private fun SimpleDivider() {
+    Divider(
+        modifier = Modifier.padding(start = 72.dp)
+    )
 }
