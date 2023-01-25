@@ -103,4 +103,8 @@ dependencies {
 
     //==================== Memory Leak Detection ====================
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
+
+    //==================== System UI controller ====================
+    def accompanist_version = '0.28.0'
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
 }
