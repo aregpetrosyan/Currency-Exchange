@@ -1,5 +1,6 @@
 package com.aregyan.compose.ui.currencyConverter
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -85,7 +86,7 @@ fun CurrencyConverterScreen() {
                     .padding(horizontal = 32.dp, vertical = 16.dp)
                     .clip(RoundedCornerShape(32.dp))
                     .background(MaterialTheme.colors.primary),
-                onClick = { /*TODO*/ }
+                onClick = viewModel::onSubmitClicked
             ) {
                 Text(
                     modifier = Modifier.padding(8.dp),
@@ -95,6 +96,14 @@ fun CurrencyConverterScreen() {
                 )
             }
 
+        }
+
+        if (uiState.showDialog) {
+            Dialog(
+                dialogTitle = uiState.dialogTitle,
+                dialogMessage = uiState.dialogMessage,
+                onDismiss = {}
+            )
         }
     }
 }
@@ -239,6 +248,49 @@ private fun ExchangeColumnItem(
             )
         }
     }
+}
+
+@Composable
+private fun Dialog(
+    @StringRes dialogTitle: Int,
+    @StringRes dialogMessage: Int,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = stringResource(id = dialogTitle),
+                style = MaterialTheme.typography.h6,
+                color = MaterialTheme.colors.onBackground
+            )
+        },
+        text = {
+            Text(
+                text = stringResource(id = dialogMessage),
+                style = MaterialTheme.typography.h6,
+                color = MaterialTheme.colors.onBackground
+            )
+        },
+        buttons = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 8.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(
+                    onClick = onDismiss
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.done),
+                        style = MaterialTheme.typography.button,
+                        color = MaterialTheme.colors.primary
+                    )
+                }
+            }
+        }
+    )
 }
 
 @Composable

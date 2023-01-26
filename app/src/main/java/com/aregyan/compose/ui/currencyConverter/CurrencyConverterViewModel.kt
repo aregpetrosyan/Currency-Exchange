@@ -1,10 +1,12 @@
 package com.aregyan.compose.ui.currencyConverter
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aregyan.compose.R
 import com.aregyan.compose.repository.ExchangeRatesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +24,7 @@ class CurrencyConverterViewModel @Inject constructor(
 
     private var exchangeRatesList = mutableMapOf<String, Double>()
     private val receiveCurrencyList = mutableListOf<String>()
+    private val balanceList = mutableListOf<Pair<String, Double>>()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -29,7 +32,6 @@ class CurrencyConverterViewModel @Inject constructor(
             exchangeRatesList = exchangeRates?.rates?.toMutableMap() ?: mutableMapOf()
             exchangeRatesList["EUR"] = 1.0
             val currencyList = exchangeRates?.rates?.map { it.key }
-            val balanceList = mutableListOf<Pair<String, Double>>()
 
             currencyList?.forEach {
                 if (it == "EUR") {
@@ -81,6 +83,15 @@ class CurrencyConverterViewModel @Inject constructor(
         }
     }
 
+    fun onSubmitClicked() {
+        val sellBalance = balanceList.find { it.first == uiState.sellCurrency }
+        if ((sellBalance?.second ?: 0.0) < uiState.sellValue.toDouble()) {
+
+        } else {
+            showDialog(title = R.string.currency_converted, message = R.string.currency_exchange)
+        }
+    }
+
     private fun updateReceiveValue() {
         val sellRate = exchangeRatesList[uiState.sellCurrency]
         val receiveRate = exchangeRatesList[uiState.receiveCurrency]
@@ -88,6 +99,10 @@ class CurrencyConverterViewModel @Inject constructor(
             val receiveValue = String.format("%.2f", uiState.sellValue.toDouble() / sellRate * receiveRate)
             uiState = uiState.copy(receiveValue = receiveValue)
         }
+    }
+
+    private fun showDialog(@StringRes title: Int, @StringRes message: Int) {
+        uiState = uiState.copy(showDialog = true, dialogTitle = title, dialogMessage = message)
     }
 
 }
