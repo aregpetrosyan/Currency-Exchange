@@ -178,7 +178,7 @@ private fun ExchangeColumnItem(
             value = sumValue,
             onValueChange = { sumValue = it },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
-            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.End),
+            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.End, color = MaterialTheme.colors.onBackground),
             singleLine = true
         )
     }
