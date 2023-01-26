@@ -1,9 +1,7 @@
 package com.aregyan.compose.di
 
 import com.aregyan.compose.BuildConfig
-import com.aregyan.compose.network.DetailsApi
 import com.aregyan.compose.network.ExchangeRatesApi
-import com.aregyan.compose.network.UsersApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,16 +37,6 @@ object NetworkModule {
         .baseUrl("https://developers.paysera.com/")
         .client(okHttpClient)
         .build()
-
-    @Provides
-    @Singleton
-    fun provideApiService(retrofit: Retrofit): UsersApi =
-        retrofit.create(UsersApi::class.java)
-
-    @Provides
-    @Singleton
-    fun provideUserDetailsService(retrofit: Retrofit): DetailsApi =
-        retrofit.create(DetailsApi::class.java)
 
     @Provides
     @Singleton

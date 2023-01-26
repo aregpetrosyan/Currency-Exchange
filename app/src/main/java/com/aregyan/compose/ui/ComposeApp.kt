@@ -7,8 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.aregyan.compose.ui.details.DetailsScreen
-import com.aregyan.compose.ui.users.UsersScreen
+import com.aregyan.compose.ui.currencyConverter.UsersScreen
 
 @Composable
 fun ComposeApp() {
@@ -27,24 +26,10 @@ fun ComposeApp() {
                 }
             )
         }
-        composable(
-            route = "${Route.DETAIL}/{${Argument.USERNAME}}",
-            arguments = listOf(
-                navArgument(Argument.USERNAME) {
-                    type = NavType.StringType
-                }
-            ),
-        ) {
-            DetailsScreen()
-        }
     }
 }
 
 object Route {
     const val USER = "user"
     const val DETAIL = "detail"
-}
-
-object Argument {
-    const val USERNAME = "username"
 }

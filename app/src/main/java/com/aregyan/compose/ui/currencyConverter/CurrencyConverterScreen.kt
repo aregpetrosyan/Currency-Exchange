@@ -1,4 +1,4 @@
-package com.aregyan.compose.ui.users
+package com.aregyan.compose.ui.currencyConverter
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -31,7 +31,7 @@ import com.aregyan.compose.ui.theme.Red
 fun UsersScreen(
     onUserClick: (String) -> Unit
 ) {
-    val viewModel = hiltViewModel<UsersViewModel>()
+    val viewModel = hiltViewModel<CurrencyConverterViewModel>()
     val uiState = viewModel.uiState
 
     if (uiState.offline) {
