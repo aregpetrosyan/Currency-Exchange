@@ -65,14 +65,18 @@ fun CurrencyConverterScreen() {
                 isSell = true,
                 selectedCurrency = uiState.sellCurrency,
                 currencyList = uiState.sellCurrencyList,
-                setCurrency = viewModel::setSellCurrency
+                numericValue = uiState.sellValue,
+                setCurrency = viewModel::setSellCurrency,
+                onInputValueChange = viewModel::onInputValueChanged
             )
             SimpleDivider()
             ExchangeColumnItem(
                 isSell = false,
                 selectedCurrency = uiState.receiveCurrency,
                 currencyList = uiState.receiveCurrencyList,
-                setCurrency = viewModel::setReceiveCurrency
+                numericValue = uiState.receiveValue,
+                setCurrency = viewModel::setReceiveCurrency,
+                onInputValueChange = {}
             )
             SimpleDivider()
             Button(
@@ -122,9 +126,10 @@ private fun ExchangeColumnItem(
     isSell: Boolean,
     selectedCurrency: String,
     currencyList: List<String>,
-    setCurrency: (String) -> Unit
+    numericValue: String,
+    setCurrency: (String) -> Unit,
+    onInputValueChange: (String) -> Unit
 ) {
-    var sumValue by remember { mutableStateOf("0.00") }
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -207,8 +212,8 @@ private fun ExchangeColumnItem(
                         start.linkTo(action.end, 24.dp)
                         width = Dimension.fillToConstraints
                     },
-                value = sumValue,
-                onValueChange = { sumValue = it },
+                value = numericValue,
+                onValueChange = onInputValueChange,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                 textStyle = LocalTextStyle.current.copy(
                     textAlign = TextAlign.End,
@@ -226,7 +231,7 @@ private fun ExchangeColumnItem(
                         start.linkTo(action.end, 24.dp)
                         width = Dimension.fillToConstraints
                     },
-                text = "0.00",
+                text = numericValue,
                 style = MaterialTheme.typography.subtitle1,
                 color = MaterialTheme.colors.onBackground,
                 textAlign = TextAlign.End

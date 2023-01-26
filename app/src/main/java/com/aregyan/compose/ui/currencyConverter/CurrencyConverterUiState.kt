@@ -6,5 +6,7 @@ data class CurrencyConverterUiState(
     val receiveCurrencyList: List<String> = listOf(),
     val sellCurrency: String = "",
     val receiveCurrency: String = "",
+    val sellValue: String = "0.00",
+    val receiveValue: String = "0.00",
     val offline: Boolean = false
 )
