@@ -73,13 +73,13 @@ class CurrencyConverterViewModel @Inject constructor(
     }
 
     fun onInputValueChanged(value: String) {
-        if (value.toDouble() <= 1000) {
+        if (value.toDouble() <= 1000000000) {
             uiState = uiState.copy(sellValue = value)
             val sellRate = exchangeRatesList[uiState.sellCurrency]
             val receiveRate = exchangeRatesList[uiState.receiveCurrency]
             if (sellRate != null && receiveRate != null) {
-                uiState =
-                    uiState.copy(receiveValue = (value.toDouble() / sellRate * receiveRate).toString())
+                val receiveValue = String.format("%.2f", value.toDouble() / sellRate * receiveRate)
+                uiState = uiState.copy(receiveValue = receiveValue)
             }
         }
     }

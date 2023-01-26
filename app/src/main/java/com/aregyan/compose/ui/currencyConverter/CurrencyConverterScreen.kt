@@ -234,7 +234,8 @@ private fun ExchangeColumnItem(
                 text = numericValue,
                 style = MaterialTheme.typography.subtitle1,
                 color = MaterialTheme.colors.onBackground,
-                textAlign = TextAlign.End
+                textAlign = TextAlign.End,
+                maxLines = 1
             )
         }
     }
