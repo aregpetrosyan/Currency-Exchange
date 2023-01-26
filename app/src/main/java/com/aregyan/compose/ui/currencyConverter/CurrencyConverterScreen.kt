@@ -1,6 +1,7 @@
 package com.aregyan.compose.ui.currencyConverter
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -62,9 +63,9 @@ fun UsersScreen(
                 }
             }
             Header(text = stringResource(id = R.string.currency_exchange))
-            ExchangeColumnItem(isSell = true)
+            ExchangeColumnItem(isSell = true, currencyList = uiState.currencyList)
             SimpleDivider()
-            ExchangeColumnItem(isSell = false)
+            ExchangeColumnItem(isSell = false, currencyList = uiState.currencyList)
             SimpleDivider()
             Button(
                 modifier = Modifier
@@ -81,6 +82,7 @@ fun UsersScreen(
                     color = Color.White
                 )
             }
+
         }
     }
 }
@@ -109,7 +111,8 @@ private fun BalanceRowItem(balance: Double, currency: String) {
 
 @Composable
 private fun ExchangeColumnItem(
-    isSell: Boolean
+    isSell: Boolean,
+    currencyList: List<String>
 ) {
     var sumValue by remember { mutableStateOf("0.00") }
     ConstraintLayout(
@@ -145,12 +148,13 @@ private fun ExchangeColumnItem(
             style = MaterialTheme.typography.subtitle2,
             color = MaterialTheme.colors.onBackground
         )
+        var showDropDown by remember { mutableStateOf(false) }
         Row(
             modifier = Modifier.constrainAs(picker) {
                 top.linkTo(parent.top)
                 end.linkTo(parent.end)
                 bottom.linkTo(parent.bottom)
-            },
+            }.clickable { showDropDown = true },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -181,6 +185,18 @@ private fun ExchangeColumnItem(
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.End, color = MaterialTheme.colors.onBackground),
             singleLine = true
         )
+        DropdownMenu(
+            expanded = showDropDown,
+            onDismissRequest = { showDropDown = false },
+        ) {
+            currencyList.forEach {
+                DropdownMenuItem(onClick = {
+
+                }) {
+                    Text(text = it)
+                }
+            }
+        }
     }
 }
 
