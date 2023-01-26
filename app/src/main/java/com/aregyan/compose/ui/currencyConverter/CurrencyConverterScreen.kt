@@ -149,26 +149,42 @@ private fun ExchangeColumnItem(
             color = MaterialTheme.colors.onBackground
         )
         var showDropDown by remember { mutableStateOf(false) }
-        Row(
+        Box(
             modifier = Modifier.constrainAs(picker) {
                 top.linkTo(parent.top)
                 end.linkTo(parent.end)
                 bottom.linkTo(parent.bottom)
-            }.clickable { showDropDown = true },
-            verticalAlignment = Alignment.CenterVertically
+            }
         ) {
-            Text(
-                modifier = Modifier
-                    .padding(end = 2.dp),
-                text = "EUR",
-                style = MaterialTheme.typography.subtitle2,
-                color = MaterialTheme.colors.onBackground
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_keyboard_arrow_down_24),
-                tint = MaterialTheme.colors.onBackground,
-                contentDescription = null
-            )
+            Row(
+                modifier = Modifier.clickable { showDropDown = true },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(end = 2.dp),
+                    text = "EUR",
+                    style = MaterialTheme.typography.subtitle2,
+                    color = MaterialTheme.colors.onBackground
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_keyboard_arrow_down_24),
+                    tint = MaterialTheme.colors.onBackground,
+                    contentDescription = null
+                )
+            }
+            DropdownMenu(
+                expanded = showDropDown,
+                onDismissRequest = { showDropDown = false },
+            ) {
+                currencyList.forEach {
+                    DropdownMenuItem(onClick = {
+
+                    }) {
+                        Text(text = it)
+                    }
+                }
+            }
         }
         BasicTextField(
             modifier = Modifier
@@ -182,21 +198,12 @@ private fun ExchangeColumnItem(
             value = sumValue,
             onValueChange = { sumValue = it },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
-            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.End, color = MaterialTheme.colors.onBackground),
+            textStyle = LocalTextStyle.current.copy(
+                textAlign = TextAlign.End,
+                color = MaterialTheme.colors.onBackground
+            ),
             singleLine = true
         )
-        DropdownMenu(
-            expanded = showDropDown,
-            onDismissRequest = { showDropDown = false },
-        ) {
-            currencyList.forEach {
-                DropdownMenuItem(onClick = {
-
-                }) {
-                    Text(text = it)
-                }
-            }
-        }
     }
 }
 
