@@ -20,13 +20,15 @@ class CurrencyConverterViewModel @Inject constructor(
     var uiState by mutableStateOf(CurrencyConverterUiState())
         private set
 
-    private val balanceList = mutableListOf<Pair<String, Double>>()
+    private var exchangeRatesList = mapOf<String, Double>()
     private val receiveCurrencyList = mutableListOf<String>()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             val exchangeRates = exchangeRatesRepository.fetchExchangeRates()
+            exchangeRatesList = exchangeRates?.rates ?: mapOf()
             val currencyList = exchangeRates?.rates?.map { it.key }
+            val balanceList = mutableListOf<Pair<String, Double>>()
 
             currencyList?.forEach {
                 if (it == "EUR") {
@@ -75,15 +77,16 @@ class CurrencyConverterViewModel @Inject constructor(
             val sellRate = if (uiState.sellCurrency == "EUR") {
                 1.0
             } else {
-                balanceList.find { it.first == uiState.sellCurrency }?.second
+                exchangeRatesList[uiState.sellCurrency]
             }
-            val receiveRate = if (uiState.sellCurrency == "EUR") {
-                    1.0
-                } else {
-                    balanceList.find { it.first == uiState.receiveCurrency }?.second
-                }
+            val receiveRate = if (uiState.receiveCurrency == "EUR") {
+                1.0
+            } else {
+                exchangeRatesList[uiState.receiveCurrency]
+            }
             if (sellRate != null && receiveRate != null) {
-                uiState = uiState.copy(receiveValue = (value.toDouble() / sellRate * receiveRate).toString())
+                uiState =
+                    uiState.copy(receiveValue = (value.toDouble() / sellRate * receiveRate).toString())
             }
         }
     }
