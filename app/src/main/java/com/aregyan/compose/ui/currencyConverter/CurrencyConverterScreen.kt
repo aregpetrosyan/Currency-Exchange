@@ -103,7 +103,7 @@ fun CurrencyConverterScreen() {
                 dialogTitle = uiState.dialogTitle,
                 dialogMessage = uiState.dialogMessage,
                 dialogParams = uiState.dialogParams,
-                onDismiss = {}
+                onDismiss = viewModel::dismissDialog
             )
         }
     }

@@ -92,6 +92,10 @@ class CurrencyConverterViewModel @Inject constructor(
         }
     }
 
+    fun dismissDialog() {
+        uiState = uiState.copy(showDialog = false)
+    }
+
     private fun updateReceiveValue() {
         val sellRate = exchangeRatesList[uiState.sellCurrency]
         val receiveRate = exchangeRatesList[uiState.receiveCurrency]
