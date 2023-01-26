@@ -197,24 +197,41 @@ private fun ExchangeColumnItem(
                 }
             }
         }
-        BasicTextField(
-            modifier = Modifier
-                .constrainAs(sum) {
-                    top.linkTo(parent.top)
-                    end.linkTo(parent.end, 80.dp)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(action.end, 24.dp)
-                    width = Dimension.fillToConstraints
-                },
-            value = sumValue,
-            onValueChange = { sumValue = it },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
-            textStyle = LocalTextStyle.current.copy(
-                textAlign = TextAlign.End,
-                color = MaterialTheme.colors.onBackground
-            ),
-            singleLine = true
-        )
+        if (isSell) {
+            BasicTextField(
+                modifier = Modifier
+                    .constrainAs(sum) {
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end, 80.dp)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(action.end, 24.dp)
+                        width = Dimension.fillToConstraints
+                    },
+                value = sumValue,
+                onValueChange = { sumValue = it },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+                textStyle = LocalTextStyle.current.copy(
+                    textAlign = TextAlign.End,
+                    color = MaterialTheme.colors.onBackground
+                ),
+                singleLine = true
+            )
+        } else {
+            Text(
+                modifier = Modifier
+                    .constrainAs(sum) {
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end, 80.dp)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(action.end, 24.dp)
+                        width = Dimension.fillToConstraints
+                    },
+                text = "0.00",
+                style = MaterialTheme.typography.subtitle1,
+                color = MaterialTheme.colors.onBackground,
+                textAlign = TextAlign.End
+            )
+        }
     }
 }
 
