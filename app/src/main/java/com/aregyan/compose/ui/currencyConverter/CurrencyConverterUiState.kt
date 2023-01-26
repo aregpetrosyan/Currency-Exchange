@@ -12,6 +12,7 @@ data class CurrencyConverterUiState(
     val receiveValue: String = "0.00",
     val offline: Boolean = false,
     val showDialog: Boolean = false,
+    val dialogParams: List<String> = listOf(),
     @StringRes val dialogTitle: Int = 0,
     @StringRes val dialogMessage: Int = 0
 )

@@ -102,6 +102,7 @@ fun CurrencyConverterScreen() {
             Dialog(
                 dialogTitle = uiState.dialogTitle,
                 dialogMessage = uiState.dialogMessage,
+                dialogParams = uiState.dialogParams,
                 onDismiss = {}
             )
         }
@@ -254,6 +255,7 @@ private fun ExchangeColumnItem(
 private fun Dialog(
     @StringRes dialogTitle: Int,
     @StringRes dialogMessage: Int,
+    dialogParams: List<String>,
     onDismiss: () -> Unit
 ) {
     AlertDialog(
@@ -261,14 +263,19 @@ private fun Dialog(
         title = {
             Text(
                 text = stringResource(id = dialogTitle),
-                style = MaterialTheme.typography.h6,
+                style = MaterialTheme.typography.subtitle2,
                 color = MaterialTheme.colors.onBackground
             )
         },
         text = {
             Text(
-                text = stringResource(id = dialogMessage),
-                style = MaterialTheme.typography.h6,
+                text = stringResource(
+                        id = dialogMessage,
+                        dialogParams.firstOrNull() ?: "",
+                        dialogParams.getOrNull(1) ?: "",
+                        dialogParams.getOrNull(2) ?: ""
+                    ),
+                style = MaterialTheme.typography.subtitle1,
                 color = MaterialTheme.colors.onBackground
             )
         },

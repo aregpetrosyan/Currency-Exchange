@@ -86,9 +86,9 @@ class CurrencyConverterViewModel @Inject constructor(
     fun onSubmitClicked() {
         val sellBalance = balanceList.find { it.first == uiState.sellCurrency }
         if ((sellBalance?.second ?: 0.0) < uiState.sellValue.toDouble()) {
-
+            showDialog(title = R.string.conversion_failed, message = R.string.not_enough_funds)
         } else {
-            showDialog(title = R.string.currency_converted, message = R.string.currency_exchange)
+            showDialog(title = R.string.currency_converted, message = R.string.commission_fee, params = listOf("", "", ""))
         }
     }
 
@@ -101,8 +101,8 @@ class CurrencyConverterViewModel @Inject constructor(
         }
     }
 
-    private fun showDialog(@StringRes title: Int, @StringRes message: Int) {
-        uiState = uiState.copy(showDialog = true, dialogTitle = title, dialogMessage = message)
+    private fun showDialog(@StringRes title: Int, @StringRes message: Int, params: List<String> = listOf()) {
+        uiState = uiState.copy(showDialog = true, dialogTitle = title, dialogMessage = message, dialogParams = params)
     }
 
 }
