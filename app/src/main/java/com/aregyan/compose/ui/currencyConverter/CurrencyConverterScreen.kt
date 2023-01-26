@@ -73,7 +73,7 @@ fun UsersScreen(
             ExchangeColumnItem(
                 isSell = false,
                 selectedCurrency = uiState.receiveCurrency,
-                currencyList = uiState.currencyList,
+                currencyList = uiState.receiveCurrencyList,
                 setCurrency = viewModel::setReceiveCurrency
             )
             SimpleDivider()
@@ -190,8 +190,10 @@ private fun ExchangeColumnItem(
                 onDismissRequest = { showDropDown = false },
             ) {
                 currencyList.forEach {
-                    DropdownMenuItem(onClick = { setCurrency(it) }
-                    ) {
+                    DropdownMenuItem(onClick = {
+                        setCurrency(it)
+                        showDropDown = false
+                    }) {
                         Text(text = it)
                     }
                 }
@@ -201,7 +203,7 @@ private fun ExchangeColumnItem(
             modifier = Modifier
                 .constrainAs(sum) {
                     top.linkTo(parent.top)
-                    end.linkTo(picker.start, 24.dp)
+                    end.linkTo(parent.end, 80.dp)
                     bottom.linkTo(parent.bottom)
                     start.linkTo(action.end, 24.dp)
                     width = Dimension.fillToConstraints

@@ -20,6 +20,8 @@ class CurrencyConverterViewModel @Inject constructor(
     var uiState by mutableStateOf(CurrencyConverterUiState())
         private set
 
+    private val receiveCurrencyList = mutableListOf<String>()
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
             val exchangeRates = exchangeRatesRepository.fetchExchangeRates()
@@ -34,10 +36,9 @@ class CurrencyConverterViewModel @Inject constructor(
             }
             val sellCurrencyList = mutableListOf<String>()
             balanceList.forEach {
+                receiveCurrencyList.add(it.first)
                 if (it.second > 0) {
                     sellCurrencyList.add(it.first)
-                } else {
-                    return@forEach
                 }
             }
             withContext(Dispatchers.Main) {
@@ -46,8 +47,8 @@ class CurrencyConverterViewModel @Inject constructor(
                 } else {
                     uiState.copy(
                         balanceList = balanceList,
-                        currencyList = exchangeRates.rates.map { it.key },
-                        sellCurrencyList = sellCurrencyList
+                        sellCurrencyList = sellCurrencyList,
+                        receiveCurrencyList = receiveCurrencyList
                     )
                 }
             }
@@ -55,11 +56,16 @@ class CurrencyConverterViewModel @Inject constructor(
     }
 
     fun setSellCurrency(currency: String) {
-
+        val modifierReceiveCurrencyList = receiveCurrencyList
+        modifierReceiveCurrencyList.remove(currency)
+        uiState = uiState.copy(
+            sellCurrency = currency,
+            receiveCurrencyList = modifierReceiveCurrencyList
+        )
     }
 
     fun setReceiveCurrency(currency: String) {
-
+        uiState = uiState.copy(receiveCurrency = currency)
     }
 
 }
