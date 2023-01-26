@@ -29,9 +29,7 @@ import com.aregyan.compose.ui.theme.Green
 import com.aregyan.compose.ui.theme.Red
 
 @Composable
-fun UsersScreen(
-    onUserClick: (String) -> Unit
-) {
+fun CurrencyConverterScreen() {
     val viewModel = hiltViewModel<CurrencyConverterViewModel>()
     val uiState = viewModel.uiState
 

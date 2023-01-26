@@ -1,35 +1,24 @@
 package com.aregyan.compose.ui
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.Lifecycle
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.aregyan.compose.ui.currencyConverter.UsersScreen
+import com.aregyan.compose.ui.currencyConverter.CurrencyConverterScreen
 
 @Composable
 fun ComposeApp() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = Route.USER
+        startDestination = Route.CURRENCY_CONVERTER
     ) {
-        composable(Route.USER) { backStackEntry ->
-            UsersScreen(
-                onUserClick = { username ->
-                    // In order to discard duplicated navigation events, we check the Lifecycle
-                    if (backStackEntry.lifecycle.currentState == Lifecycle.State.RESUMED) {
-                        navController.navigate("${Route.DETAIL}/$username")
-                    }
-                }
-            )
+        composable(Route.CURRENCY_CONVERTER) {
+            CurrencyConverterScreen()
         }
     }
 }
 
 object Route {
-    const val USER = "user"
-    const val DETAIL = "detail"
+    const val CURRENCY_CONVERTER = "currencyConverter"
 }
