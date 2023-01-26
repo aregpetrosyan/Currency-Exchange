@@ -32,13 +32,22 @@ class CurrencyConverterViewModel @Inject constructor(
                     balanceList.add(Pair(it, 0.0))
                 }
             }
+            val sellCurrencyList = mutableListOf<String>()
+            balanceList.forEach {
+                if (it.second > 0) {
+                    sellCurrencyList.add(it.first)
+                } else {
+                    return@forEach
+                }
+            }
             withContext(Dispatchers.Main) {
                 uiState = if (exchangeRates == null) {
                     uiState.copy(offline = true)
                 } else {
                     uiState.copy(
                         balanceList = balanceList,
-                        currencyList = exchangeRates.rates.map { it.key }
+                        currencyList = exchangeRates.rates.map { it.key },
+                        sellCurrencyList = sellCurrencyList
                     )
                 }
             }

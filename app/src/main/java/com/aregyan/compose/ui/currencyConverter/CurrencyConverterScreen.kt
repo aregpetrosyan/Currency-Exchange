@@ -63,7 +63,7 @@ fun UsersScreen(
                 }
             }
             Header(text = stringResource(id = R.string.currency_exchange))
-            ExchangeColumnItem(isSell = true, currencyList = uiState.currencyList)
+            ExchangeColumnItem(isSell = true, currencyList = uiState.sellCurrencyList)
             SimpleDivider()
             ExchangeColumnItem(isSell = false, currencyList = uiState.currencyList)
             SimpleDivider()
