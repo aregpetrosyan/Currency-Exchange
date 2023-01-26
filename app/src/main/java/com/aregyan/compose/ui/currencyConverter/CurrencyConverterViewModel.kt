@@ -66,21 +66,27 @@ class CurrencyConverterViewModel @Inject constructor(
             sellCurrency = currency,
             receiveCurrencyList = modifierReceiveCurrencyList
         )
+        updateReceiveValue()
     }
 
     fun setReceiveCurrency(currency: String) {
         uiState = uiState.copy(receiveCurrency = currency)
+        updateReceiveValue()
     }
 
     fun onInputValueChanged(value: String) {
         if (value.toDouble() <= 1000000000) {
             uiState = uiState.copy(sellValue = value)
-            val sellRate = exchangeRatesList[uiState.sellCurrency]
-            val receiveRate = exchangeRatesList[uiState.receiveCurrency]
-            if (sellRate != null && receiveRate != null) {
-                val receiveValue = String.format("%.2f", value.toDouble() / sellRate * receiveRate)
-                uiState = uiState.copy(receiveValue = receiveValue)
-            }
+            updateReceiveValue()
+        }
+    }
+
+    private fun updateReceiveValue() {
+        val sellRate = exchangeRatesList[uiState.sellCurrency]
+        val receiveRate = exchangeRatesList[uiState.receiveCurrency]
+        if (sellRate != null && receiveRate != null) {
+            val receiveValue = String.format("%.2f", uiState.sellValue.toDouble() / sellRate * receiveRate)
+            uiState = uiState.copy(receiveValue = receiveValue)
         }
     }
 
