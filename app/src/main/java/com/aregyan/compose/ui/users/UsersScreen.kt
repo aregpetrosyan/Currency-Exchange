@@ -5,12 +5,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -49,20 +52,35 @@ fun UsersScreen(
                     modifier = Modifier.align(Alignment.Center),
                     text = stringResource(id = R.string.currency_converter),
                     style = MaterialTheme.typography.subtitle1,
-                    color = MaterialTheme.colors.onBackground
+                    color = Color.White
                 )
             }
-            Header(text = stringResource(id = R.string.my_balances).uppercase())
+            Header(text = stringResource(id = R.string.my_balances))
             LazyRow {
                 items(items = uiState.currencyList) {
                     BalanceRowItem(balance = 0.00, currency = it)
                 }
             }
-            Header(text = stringResource(id = R.string.currency_exchange).uppercase())
+            Header(text = stringResource(id = R.string.currency_exchange))
             ExchangeColumnItem(isSell = true)
             SimpleDivider()
             ExchangeColumnItem(isSell = false)
             SimpleDivider()
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp, vertical = 16.dp)
+                    .clip(RoundedCornerShape(32.dp))
+                    .background(MaterialTheme.colors.primary),
+                onClick = { /*TODO*/ }
+            ) {
+                Text(
+                    modifier = Modifier.padding(8.dp),
+                    text = stringResource(id = R.string.submit),
+                    style = MaterialTheme.typography.subtitle2,
+                    color = Color.White
+                )
+            }
         }
     }
 }
@@ -112,7 +130,7 @@ private fun ExchangeColumnItem(
                 .background(if (isSell) Red else Green, CircleShape)
                 .padding(8.dp),
             painter = painterResource(id = if (isSell) R.drawable.baseline_arrow_upward_24 else R.drawable.baseline_arrow_downward_24),
-            tint = MaterialTheme.colors.background,
+            tint = Color.White,
             contentDescription = null
         )
         Text(

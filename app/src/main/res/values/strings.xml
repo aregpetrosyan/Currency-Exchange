@@ -2,9 +2,9 @@
     <string name="app_name">Jetpack Compose Boilerplate</string>
     <string name="please_check_network_connection">Please check your network connection</string>
     <string name="currency_converter">Currency converter</string>
-    <string name="my_balances">my balances</string>
-    <string name="currency_exchange">currency exchange</string>
+    <string name="my_balances">MY BALANCES</string>
+    <string name="currency_exchange">CURRENCY EXCHANGE</string>
     <string name="sell">Sell</string>
     <string name="receive">Receive</string>
-    <string name="submit">submit</string>
+    <string name="submit">SUBMIT</string>
 </resources>
