@@ -58,8 +58,8 @@ fun UsersScreen(
             }
             Header(text = stringResource(id = R.string.my_balances))
             LazyRow {
-                items(items = uiState.currencyList) {
-                    BalanceRowItem(balance = 0.00, currency = it)
+                items(items = uiState.balanceList) {
+                    BalanceRowItem(balance = it.second, currency = it.first)
                 }
             }
             Header(text = stringResource(id = R.string.currency_exchange))

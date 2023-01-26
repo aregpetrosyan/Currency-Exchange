@@ -23,11 +23,23 @@ class CurrencyConverterViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             val exchangeRates = exchangeRatesRepository.fetchExchangeRates()
+            val currencyList = exchangeRates?.rates?.map { it.key }
+            val balanceList = mutableListOf<Pair<String, Double>>()
+            currencyList?.forEach {
+                if (it == "EUR") {
+                    balanceList.add(0, Pair(it, 1000.0))
+                } else {
+                    balanceList.add(Pair(it, 0.0))
+                }
+            }
             withContext(Dispatchers.Main) {
                 uiState = if (exchangeRates == null) {
                     uiState.copy(offline = true)
                 } else {
-                    uiState.copy(currencyList = exchangeRates.rates.map { it.key })
+                    uiState.copy(
+                        balanceList = balanceList,
+                        currencyList = exchangeRates.rates.map { it.key }
+                    )
                 }
             }
         }
