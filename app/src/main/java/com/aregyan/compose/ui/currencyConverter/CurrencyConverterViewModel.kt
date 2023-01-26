@@ -54,4 +54,12 @@ class CurrencyConverterViewModel @Inject constructor(
         }
     }
 
+    fun setSellCurrency(currency: String) {
+
+    }
+
+    fun setReceiveCurrency(currency: String) {
+
+    }
+
 }

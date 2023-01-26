@@ -63,9 +63,19 @@ fun UsersScreen(
                 }
             }
             Header(text = stringResource(id = R.string.currency_exchange))
-            ExchangeColumnItem(isSell = true, currencyList = uiState.sellCurrencyList)
+            ExchangeColumnItem(
+                isSell = true,
+                selectedCurrency = uiState.sellCurrency,
+                currencyList = uiState.sellCurrencyList,
+                setCurrency = viewModel::setSellCurrency
+            )
             SimpleDivider()
-            ExchangeColumnItem(isSell = false, currencyList = uiState.currencyList)
+            ExchangeColumnItem(
+                isSell = false,
+                selectedCurrency = uiState.receiveCurrency,
+                currencyList = uiState.currencyList,
+                setCurrency = viewModel::setReceiveCurrency
+            )
             SimpleDivider()
             Button(
                 modifier = Modifier
@@ -112,7 +122,9 @@ private fun BalanceRowItem(balance: Double, currency: String) {
 @Composable
 private fun ExchangeColumnItem(
     isSell: Boolean,
-    currencyList: List<String>
+    selectedCurrency: String,
+    currencyList: List<String>,
+    setCurrency: (String) -> Unit
 ) {
     var sumValue by remember { mutableStateOf("0.00") }
     ConstraintLayout(
@@ -163,7 +175,7 @@ private fun ExchangeColumnItem(
                 Text(
                     modifier = Modifier
                         .padding(end = 2.dp),
-                    text = "EUR",
+                    text = selectedCurrency,
                     style = MaterialTheme.typography.subtitle2,
                     color = MaterialTheme.colors.onBackground
                 )
@@ -178,9 +190,8 @@ private fun ExchangeColumnItem(
                 onDismissRequest = { showDropDown = false },
             ) {
                 currencyList.forEach {
-                    DropdownMenuItem(onClick = {
-
-                    }) {
+                    DropdownMenuItem(onClick = { setCurrency(it) }
+                    ) {
                         Text(text = it)
                     }
                 }
