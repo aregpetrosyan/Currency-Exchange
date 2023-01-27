@@ -92,15 +92,22 @@ class CurrencyConverterViewModel @Inject constructor(
         } else {
             val sellItem = balanceList.find { it.first == uiState.sellCurrency }
             val sellIndex = balanceList.indexOf(sellItem)
-            balanceList[sellIndex] = Pair(uiState.sellCurrency, (sellItem?.second ?: 0.0) - uiState.sellValue.toDouble() - COMMISSION_FEE.toDouble())
+            balanceList[sellIndex] = Pair(
+                uiState.sellCurrency,
+                (sellItem?.second ?: 0.0) - uiState.sellValue.toDouble()
+                        - if (COMMISSION_ENABLED) COMMISSION_FEE.toDouble() else 0.0
+            )
 
             val receiveItem = balanceList.find { it.first == uiState.receiveCurrency }
             val receiveIndex = balanceList.indexOf(receiveItem)
-            balanceList[receiveIndex] = Pair(uiState.receiveCurrency, (receiveItem?.second ?: 0.0) + uiState.receiveValue.toDouble())
+            balanceList[receiveIndex] = Pair(
+                uiState.receiveCurrency,
+                (receiveItem?.second ?: 0.0) + uiState.receiveValue.toDouble()
+            )
 
             showDialog(
                 title = R.string.currency_converted,
-                message = R.string.commission_fee,
+                message = if (COMMISSION_ENABLED) R.string.commission_fee else R.string.you_have_converted,
                 params = listOf(
                     "${uiState.sellValue} ${uiState.sellCurrency}",
                     "${uiState.receiveValue} ${uiState.receiveCurrency}",
@@ -139,6 +146,7 @@ class CurrencyConverterViewModel @Inject constructor(
 
     companion object {
         private const val COMMISSION_FEE = "0.70"
+        private const val COMMISSION_ENABLED = true
     }
 
 }
