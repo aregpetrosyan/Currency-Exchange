@@ -85,10 +85,20 @@ class CurrencyConverterViewModel @Inject constructor(
 
     fun onSubmitClicked() {
         val sellBalance = balanceList.find { it.first == uiState.sellCurrency }
-        if ((sellBalance?.second ?: 0.0) < uiState.sellValue.toDouble()) {
+        if (uiState.sellValue.toDouble() == 0.0 || uiState.sellCurrency.isEmpty() || uiState.receiveCurrency.isEmpty()) {
+            showDialog(title = R.string.conversion_failed, message = R.string.values_missing)
+        } else if ((sellBalance?.second ?: 0.0) < uiState.sellValue.toDouble()) {
             showDialog(title = R.string.conversion_failed, message = R.string.not_enough_funds)
         } else {
-            showDialog(title = R.string.currency_converted, message = R.string.commission_fee, params = listOf("", "", ""))
+            showDialog(
+                title = R.string.currency_converted,
+                message = R.string.commission_fee,
+                params = listOf(
+                    "${uiState.sellValue} ${uiState.sellCurrency}",
+                    "${uiState.receiveValue} ${uiState.receiveCurrency}",
+                    "$COMMISSION_FEE ${uiState.sellCurrency}"
+                )
+            )
         }
     }
 
@@ -100,13 +110,27 @@ class CurrencyConverterViewModel @Inject constructor(
         val sellRate = exchangeRatesList[uiState.sellCurrency]
         val receiveRate = exchangeRatesList[uiState.receiveCurrency]
         if (sellRate != null && receiveRate != null) {
-            val receiveValue = String.format("%.2f", uiState.sellValue.toDouble() / sellRate * receiveRate)
+            val receiveValue =
+                String.format("%.2f", uiState.sellValue.toDouble() / sellRate * receiveRate)
             uiState = uiState.copy(receiveValue = receiveValue)
         }
     }
 
-    private fun showDialog(@StringRes title: Int, @StringRes message: Int, params: List<String> = listOf()) {
-        uiState = uiState.copy(showDialog = true, dialogTitle = title, dialogMessage = message, dialogParams = params)
+    private fun showDialog(
+        @StringRes title: Int,
+        @StringRes message: Int,
+        params: List<String> = listOf()
+    ) {
+        uiState = uiState.copy(
+            showDialog = true,
+            dialogTitle = title,
+            dialogMessage = message,
+            dialogParams = params
+        )
+    }
+
+    companion object {
+        private const val COMMISSION_FEE = "0.70"
     }
 
 }

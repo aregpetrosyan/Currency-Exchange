@@ -10,6 +10,7 @@
     <string name="done">Done</string>
     <string name="currency_converted">Currency converted</string>
     <string name="conversion_failed">Conversion failed</string>
+    <string name="values_missing">Some values are missing.</string>
     <string name="not_enough_funds">Not enough funds available.</string>
     <string name="you_have_converted">You have converted %1$s to %2$s.</string>
     <string name="commission_fee">You have converted %1$s to %2$s. Commission fee - %3$s.</string>
