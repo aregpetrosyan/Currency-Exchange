@@ -26,6 +26,7 @@ class CurrencyConverterViewModel @Inject constructor(
     private val receiveCurrencyList = mutableListOf<String>()
     private val balanceList = mutableListOf<Pair<String, Double>>()
 
+    private lateinit var fetchExchangeRatesJob: Job
     private var initialValuesNotSet = true
 
     fun setSellCurrency(currency: String) {
@@ -88,18 +89,17 @@ class CurrencyConverterViewModel @Inject constructor(
         uiState = uiState.copy(showDialog = false)
     }
 
-    private val fetchExchangeRatesJob: Job = viewModelScope.launch(Dispatchers.IO) {
-        flow {
-            while (true) {
-                emit(exchangeRatesRepository.fetchExchangeRates())
-                delay(5000)
-            }
-        }.collectLatest {
-            handleResponse(it)
-        }
-    }
-
     fun onStart() {
+        fetchExchangeRatesJob = viewModelScope.launch(Dispatchers.IO) {
+            flow {
+                while (true) {
+                    emit(exchangeRatesRepository.fetchExchangeRates())
+                    delay(5000)
+                }
+            }.collectLatest {
+                handleResponse(it)
+            }
+        }
         fetchExchangeRatesJob.start()
     }
 
