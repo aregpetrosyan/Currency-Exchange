@@ -90,7 +90,7 @@ fun CurrencyConverterScreen() {
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp, vertical = 16.dp)
+                    .padding(32.dp)
                     .clip(RoundedCornerShape(32.dp))
                     .background(MaterialTheme.colors.primary),
                 onClick = viewModel::onSubmitClicked
@@ -124,7 +124,7 @@ private fun Header(
         modifier = Modifier.padding(16.dp),
         text = text,
         style = MaterialTheme.typography.subtitle2,
-        color = MaterialTheme.colors.onBackground
+        color = MaterialTheme.colors.onBackground.copy(alpha = 0.6f)
     )
 }
 
