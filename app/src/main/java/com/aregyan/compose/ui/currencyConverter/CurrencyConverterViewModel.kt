@@ -28,6 +28,7 @@ class CurrencyConverterViewModel @Inject constructor(
 
     private lateinit var fetchExchangeRatesJob: Job
     private var initialValuesNotSet = true
+    private var conversionCount = 0
 
     fun setSellCurrency(currency: String) {
         val modifierReceiveCurrencyList = mutableListOf<String>()
@@ -59,12 +60,16 @@ class CurrencyConverterViewModel @Inject constructor(
         } else if ((sellBalance?.second ?: 0.0) < uiState.sellValue.toDouble()) {
             showDialog(title = R.string.conversion_failed, message = R.string.not_enough_funds)
         } else {
+            conversionCount += 1
+            val commissionFeeEnabled = conversionCount > 5
+
             val sellItem = balanceList.find { it.first == uiState.sellCurrency }
             val sellIndex = balanceList.indexOf(sellItem)
+            val totalCommissionFee = COMMISSION_FEE * uiState.sellValue.toDouble()
             balanceList[sellIndex] = Pair(
                 uiState.sellCurrency,
                 (sellItem?.second ?: 0.0) - uiState.sellValue.toDouble()
-                        - if (COMMISSION_ENABLED) COMMISSION_FEE.toDouble() else 0.0
+                        - if (commissionFeeEnabled) totalCommissionFee else 0.0
             )
 
             val receiveItem = balanceList.find { it.first == uiState.receiveCurrency }
@@ -76,11 +81,11 @@ class CurrencyConverterViewModel @Inject constructor(
 
             showDialog(
                 title = R.string.currency_converted,
-                message = if (COMMISSION_ENABLED) R.string.commission_fee else R.string.you_have_converted,
+                message = if (commissionFeeEnabled) R.string.commission_fee else R.string.you_have_converted,
                 params = listOf(
                     "${uiState.sellValue} ${uiState.sellCurrency}",
                     "${uiState.receiveValue} ${uiState.receiveCurrency}",
-                    "$COMMISSION_FEE ${uiState.sellCurrency}"
+                    "${totalCommissionFee.format()} ${uiState.sellCurrency}"
                 )
             )
         }
@@ -159,8 +164,9 @@ class CurrencyConverterViewModel @Inject constructor(
     }
 
     companion object {
-        private const val COMMISSION_FEE = "0.70"
-        private const val COMMISSION_ENABLED = true
+        private const val COMMISSION_FEE = 0.007 // 0.7%
     }
+
+    fun Double.format() = String.format("%.2f", this)
 
 }
