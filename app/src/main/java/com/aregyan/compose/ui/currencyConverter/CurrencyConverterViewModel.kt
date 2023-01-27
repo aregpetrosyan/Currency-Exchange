@@ -23,14 +23,15 @@ class CurrencyConverterViewModel @Inject constructor(
         private set
 
     private var exchangeRatesList = mutableMapOf<String, Double>()
-    private val receiveCurrencyList = mutableListOf<String>()
+    private var currencyList = listOf<String>()
     private val balanceList = mutableListOf<Pair<String, Double>>()
 
     private lateinit var fetchExchangeRatesJob: Job
     private var initialValuesNotSet = true
 
     fun setSellCurrency(currency: String) {
-        val modifierReceiveCurrencyList = receiveCurrencyList
+        val modifierReceiveCurrencyList = mutableListOf<String>()
+        modifierReceiveCurrencyList.addAll(currencyList)
         modifierReceiveCurrencyList.remove(currency)
         uiState = uiState.copy(
             sellCurrency = currency,
@@ -111,20 +112,13 @@ class CurrencyConverterViewModel @Inject constructor(
         exchangeRatesList = exchangeRatesApiModel?.rates?.toMutableMap() ?: mutableMapOf()
         exchangeRatesList["EUR"] = 1.0
         if (initialValuesNotSet) {
-            val currencyList = exchangeRatesApiModel?.rates?.map { it.key }
+            currencyList = exchangeRatesApiModel?.rates?.map { it.key } ?: listOf()
 
-            currencyList?.forEach {
+            currencyList.forEach {
                 if (it == "EUR") {
                     balanceList.add(0, Pair(it, 1000.0))
                 } else {
                     balanceList.add(Pair(it, 0.0))
-                }
-            }
-            val sellCurrencyList = mutableListOf<String>()
-            balanceList.forEach {
-                receiveCurrencyList.add(it.first)
-                if (it.second > 0) {
-                    sellCurrencyList.add(it.first)
                 }
             }
 
@@ -133,8 +127,8 @@ class CurrencyConverterViewModel @Inject constructor(
             } else {
                 uiState.copy(
                     balanceList = balanceList,
-                    sellCurrencyList = sellCurrencyList,
-                    receiveCurrencyList = receiveCurrencyList
+                    sellCurrencyList = currencyList,
+                    receiveCurrencyList = currencyList
                 )
             }
             initialValuesNotSet = false
