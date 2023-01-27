@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
 import com.aregyan.compose.R
+import com.aregyan.compose.network.model.ExchangeRatesApiModel
 import com.aregyan.compose.repository.ExchangeRatesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -25,40 +26,7 @@ class CurrencyConverterViewModel @Inject constructor(
     private val receiveCurrencyList = mutableListOf<String>()
     private val balanceList = mutableListOf<Pair<String, Double>>()
 
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            val exchangeRates = exchangeRatesRepository.fetchExchangeRates()
-            exchangeRatesList = exchangeRates?.rates?.toMutableMap() ?: mutableMapOf()
-            exchangeRatesList["EUR"] = 1.0
-            val currencyList = exchangeRates?.rates?.map { it.key }
-
-            currencyList?.forEach {
-                if (it == "EUR") {
-                    balanceList.add(0, Pair(it, 1000.0))
-                } else {
-                    balanceList.add(Pair(it, 0.0))
-                }
-            }
-            val sellCurrencyList = mutableListOf<String>()
-            balanceList.forEach {
-                receiveCurrencyList.add(it.first)
-                if (it.second > 0) {
-                    sellCurrencyList.add(it.first)
-                }
-            }
-            withContext(Dispatchers.Main) {
-                uiState = if (exchangeRates == null) {
-                    uiState.copy(offline = true)
-                } else {
-                    uiState.copy(
-                        balanceList = balanceList,
-                        sellCurrencyList = sellCurrencyList,
-                        receiveCurrencyList = receiveCurrencyList
-                    )
-                }
-            }
-        }
-    }
+    private var initialValuesNotSet = true
 
     fun setSellCurrency(currency: String) {
         val modifierReceiveCurrencyList = receiveCurrencyList
@@ -126,7 +94,9 @@ class CurrencyConverterViewModel @Inject constructor(
                 emit(exchangeRatesRepository.fetchExchangeRates())
                 delay(5000)
             }
-        }.collectLatest {}
+        }.collectLatest {
+            handleResponse(it)
+        }
     }
 
     fun onStart() {
@@ -135,6 +105,40 @@ class CurrencyConverterViewModel @Inject constructor(
 
     fun onStop() {
         fetchExchangeRatesJob.cancel()
+    }
+
+    private fun handleResponse(exchangeRatesApiModel: ExchangeRatesApiModel?) {
+        exchangeRatesList = exchangeRatesApiModel?.rates?.toMutableMap() ?: mutableMapOf()
+        exchangeRatesList["EUR"] = 1.0
+        if (initialValuesNotSet) {
+            val currencyList = exchangeRatesApiModel?.rates?.map { it.key }
+
+            currencyList?.forEach {
+                if (it == "EUR") {
+                    balanceList.add(0, Pair(it, 1000.0))
+                } else {
+                    balanceList.add(Pair(it, 0.0))
+                }
+            }
+            val sellCurrencyList = mutableListOf<String>()
+            balanceList.forEach {
+                receiveCurrencyList.add(it.first)
+                if (it.second > 0) {
+                    sellCurrencyList.add(it.first)
+                }
+            }
+
+            uiState = if (exchangeRatesApiModel == null) {
+                uiState.copy(offline = true)
+            } else {
+                uiState.copy(
+                    balanceList = balanceList,
+                    sellCurrencyList = sellCurrencyList,
+                    receiveCurrencyList = receiveCurrencyList
+                )
+            }
+            initialValuesNotSet = false
+        }
     }
 
     private fun updateReceiveValue() {
