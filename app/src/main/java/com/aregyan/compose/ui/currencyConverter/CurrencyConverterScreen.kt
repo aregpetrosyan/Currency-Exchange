@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.aregyan.compose.R
 import com.aregyan.compose.ui.components.LifecycleEventHandler
 import com.aregyan.compose.ui.components.NoNetwork
+import com.aregyan.compose.ui.theme.AmountGreen
 import com.aregyan.compose.ui.theme.Green
 import com.aregyan.compose.ui.theme.Red
 
@@ -247,9 +248,9 @@ private fun ExchangeColumnItem(
                         start.linkTo(action.end, 24.dp)
                         width = Dimension.fillToConstraints
                     },
-                text = numericValue,
+                text = if (numericValue.toDouble() > 0) "+ $numericValue" else numericValue,
                 style = MaterialTheme.typography.subtitle1,
-                color = MaterialTheme.colors.onBackground,
+                color = if (numericValue.toDouble() > 0) AmountGreen else MaterialTheme.colors.onBackground,
                 textAlign = TextAlign.End,
                 maxLines = 1
             )
