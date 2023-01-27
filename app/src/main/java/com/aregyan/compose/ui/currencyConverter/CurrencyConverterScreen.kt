@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -106,7 +107,7 @@ fun CurrencyConverterScreen() {
         }
 
         if (uiState.showDialog) {
-            Dialog(
+            MessageDialog(
                 dialogTitle = uiState.dialogTitle,
                 dialogMessage = uiState.dialogMessage,
                 dialogParams = uiState.dialogParams,
@@ -259,48 +260,49 @@ private fun ExchangeColumnItem(
 }
 
 @Composable
-private fun Dialog(
+private fun MessageDialog(
     @StringRes dialogTitle: Int,
     @StringRes dialogMessage: Int,
     dialogParams: List<String>,
     onDismiss: () -> Unit
 ) {
-    AlertDialog(
+    Dialog(
         onDismissRequest = onDismiss,
-        title = {
-            Text(
-                text = stringResource(id = dialogTitle),
-                style = MaterialTheme.typography.subtitle2,
-                color = MaterialTheme.colors.onBackground
-            )
-        },
-        text = {
-            Text(
-                text = stringResource(
+        content = {
+            Column(
+                modifier = Modifier
+                    .background(MaterialTheme.colors.background)
+                    .padding(top = 24.dp, start = 24.dp, end = 24.dp, bottom = 8.dp)
+            ) {
+                Text(
+                    text = stringResource(id = dialogTitle),
+                    style = MaterialTheme.typography.subtitle1,
+                    color = MaterialTheme.colors.onBackground
+                )
+                Text(
+                    modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
+                    text = stringResource(
                         id = dialogMessage,
                         dialogParams.firstOrNull() ?: "",
                         dialogParams.getOrNull(1) ?: "",
                         dialogParams.getOrNull(2) ?: ""
                     ),
-                style = MaterialTheme.typography.subtitle1,
-                color = MaterialTheme.colors.onBackground
-            )
-        },
-        buttons = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 8.dp),
-                horizontalArrangement = Arrangement.End
-            ) {
-                TextButton(
-                    onClick = onDismiss
+                    style = MaterialTheme.typography.subtitle2,
+                    color = MaterialTheme.colors.onBackground
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.done),
-                        style = MaterialTheme.typography.button,
-                        color = MaterialTheme.colors.primary
-                    )
+                    TextButton(
+                        onClick = onDismiss
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.done),
+                            style = MaterialTheme.typography.button,
+                            color = MaterialTheme.colors.primary
+                        )
+                    }
                 }
             }
         }
