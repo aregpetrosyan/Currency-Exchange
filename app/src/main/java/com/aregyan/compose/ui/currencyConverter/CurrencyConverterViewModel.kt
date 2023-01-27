@@ -4,14 +4,13 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.aregyan.compose.R
 import com.aregyan.compose.repository.ExchangeRatesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -119,6 +118,23 @@ class CurrencyConverterViewModel @Inject constructor(
 
     fun dismissDialog() {
         uiState = uiState.copy(showDialog = false)
+    }
+
+    private val fetchExchangeRatesJob: Job = viewModelScope.launch(Dispatchers.IO) {
+        flow {
+            while (true) {
+                emit(exchangeRatesRepository.fetchExchangeRates())
+                delay(5000)
+            }
+        }.collectLatest {}
+    }
+
+    fun onStart() {
+        fetchExchangeRatesJob.start()
+    }
+
+    fun onStop() {
+        fetchExchangeRatesJob.cancel()
     }
 
     private fun updateReceiveValue() {

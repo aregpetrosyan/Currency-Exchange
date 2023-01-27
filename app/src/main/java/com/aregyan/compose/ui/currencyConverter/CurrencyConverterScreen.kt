@@ -25,6 +25,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aregyan.compose.R
+import com.aregyan.compose.ui.components.LifecycleEventHandler
 import com.aregyan.compose.ui.components.NoNetwork
 import com.aregyan.compose.ui.theme.Green
 import com.aregyan.compose.ui.theme.Red
@@ -33,6 +34,11 @@ import com.aregyan.compose.ui.theme.Red
 fun CurrencyConverterScreen() {
     val viewModel = hiltViewModel<CurrencyConverterViewModel>()
     val uiState = viewModel.uiState
+
+    LifecycleEventHandler(
+        onResume = viewModel::onStart,
+        onPause = viewModel::onStop
+    )
 
     if (uiState.offline) {
         NoNetwork()
