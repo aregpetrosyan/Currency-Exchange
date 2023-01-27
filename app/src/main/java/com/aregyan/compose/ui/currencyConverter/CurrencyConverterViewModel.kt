@@ -24,7 +24,7 @@ class CurrencyConverterViewModel @Inject constructor(
 
     private var exchangeRatesList = mutableMapOf<String, Double>()
     private var currencyList = listOf<String>()
-    private val balanceList = mutableListOf<Pair<String, Double>>()
+    private val balanceList = mutableListOf<Pair<String, String>>()
 
     private lateinit var fetchExchangeRatesJob: Job
     private var initialValuesNotSet = true
@@ -57,7 +57,7 @@ class CurrencyConverterViewModel @Inject constructor(
         val sellBalance = balanceList.find { it.first == uiState.sellCurrency }
         if (uiState.sellValue.toDouble() == 0.0 || uiState.sellCurrency.isEmpty() || uiState.receiveCurrency.isEmpty()) {
             showDialog(title = R.string.conversion_failed, message = R.string.values_missing)
-        } else if ((sellBalance?.second ?: 0.0) < uiState.sellValue.toDouble()) {
+        } else if ((sellBalance?.second?.toDouble() ?: 0.0) < uiState.sellValue.toDouble()) {
             showDialog(title = R.string.conversion_failed, message = R.string.not_enough_funds)
         } else {
             conversionCount += 1
@@ -68,15 +68,15 @@ class CurrencyConverterViewModel @Inject constructor(
             val totalCommissionFee = COMMISSION_FEE * uiState.sellValue.toDouble()
             balanceList[sellIndex] = Pair(
                 uiState.sellCurrency,
-                (sellItem?.second ?: 0.0) - uiState.sellValue.toDouble()
-                        - if (commissionFeeEnabled) totalCommissionFee else 0.0
+                ((sellItem?.second?.toDouble() ?: 0.0) - uiState.sellValue.toDouble()
+                        - if (commissionFeeEnabled) totalCommissionFee else 0.0).format()
             )
 
             val receiveItem = balanceList.find { it.first == uiState.receiveCurrency }
             val receiveIndex = balanceList.indexOf(receiveItem)
             balanceList[receiveIndex] = Pair(
                 uiState.receiveCurrency,
-                (receiveItem?.second ?: 0.0) + uiState.receiveValue.toDouble()
+                ((receiveItem?.second?.toDouble() ?: 0.0) + uiState.receiveValue.toDouble()).format()
             )
 
             showDialog(
@@ -121,9 +121,9 @@ class CurrencyConverterViewModel @Inject constructor(
 
             currencyList.forEach {
                 if (it == "EUR") {
-                    balanceList.add(0, Pair(it, 1000.0))
+                    balanceList.add(0, Pair(it, "1000.00"))
                 } else {
-                    balanceList.add(Pair(it, 0.0))
+                    balanceList.add(Pair(it, "0.00"))
                 }
             }
 
@@ -144,9 +144,9 @@ class CurrencyConverterViewModel @Inject constructor(
         val sellRate = exchangeRatesList[uiState.sellCurrency]
         val receiveRate = exchangeRatesList[uiState.receiveCurrency]
         if (sellRate != null && receiveRate != null) {
-            val receiveValue =
-                String.format("%.2f", uiState.sellValue.toDouble() / sellRate * receiveRate)
-            uiState = uiState.copy(receiveValue = receiveValue)
+            uiState = uiState.copy(
+                receiveValue = (uiState.sellValue.toDouble() / sellRate * receiveRate).format()
+            )
         }
     }
 
@@ -163,10 +163,10 @@ class CurrencyConverterViewModel @Inject constructor(
         )
     }
 
+    private fun Double.format() = String.format("%.2f", this)
+
     companion object {
         private const val COMMISSION_FEE = 0.007 // 0.7%
     }
-
-    fun Double.format() = String.format("%.2f", this)
 
 }

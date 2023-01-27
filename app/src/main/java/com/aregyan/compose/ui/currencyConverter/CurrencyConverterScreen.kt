@@ -128,7 +128,7 @@ private fun Header(
 }
 
 @Composable
-private fun BalanceRowItem(balance: Double, currency: String) {
+private fun BalanceRowItem(balance: String, currency: String) {
     Text(
         modifier = Modifier.padding(16.dp),
         text = "$balance $currency",

@@ -3,7 +3,7 @@ package com.aregyan.compose.ui.currencyConverter
 import androidx.annotation.StringRes
 
 data class CurrencyConverterUiState(
-    val balanceList: List<Pair<String, Double>> = listOf(),
+    val balanceList: List<Pair<String, String>> = listOf(),
     val sellCurrencyList: List<String> = listOf(),
     val receiveCurrencyList: List<String> = listOf(),
     val sellCurrency: String = "",
