@@ -90,6 +90,14 @@ class CurrencyConverterViewModel @Inject constructor(
         } else if ((sellBalance?.second ?: 0.0) < uiState.sellValue.toDouble()) {
             showDialog(title = R.string.conversion_failed, message = R.string.not_enough_funds)
         } else {
+            val sellItem = balanceList.find { it.first == uiState.sellCurrency }
+            val sellIndex = balanceList.indexOf(sellItem)
+            balanceList[sellIndex] = Pair(uiState.sellCurrency, (sellItem?.second ?: 0.0) - uiState.sellValue.toDouble() - COMMISSION_FEE.toDouble())
+
+            val receiveItem = balanceList.find { it.first == uiState.receiveCurrency }
+            val receiveIndex = balanceList.indexOf(receiveItem)
+            balanceList[receiveIndex] = Pair(uiState.receiveCurrency, (receiveItem?.second ?: 0.0) + uiState.receiveValue.toDouble())
+
             showDialog(
                 title = R.string.currency_converted,
                 message = R.string.commission_fee,
