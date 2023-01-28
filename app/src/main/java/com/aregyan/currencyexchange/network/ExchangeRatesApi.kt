@@ -1,6 +1,6 @@
-package com.aregyan.compose.network
+package com.aregyan.currencyexchange.network
 
-import com.aregyan.compose.network.model.ExchangeRatesApiModel
+import com.aregyan.currencyexchange.network.model.ExchangeRatesApiModel
 import retrofit2.http.GET
 
 interface ExchangeRatesApi {

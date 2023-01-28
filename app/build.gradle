@@ -9,7 +9,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.aregyan.compose"
+        applicationId "com.aregyan.currencyexchange"
         minSdk 23
         targetSdk 33
         versionCode 1
@@ -45,7 +45,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
-    namespace 'com.aregyan.compose'
+    namespace 'com.aregyan.currencyexchange'
 }
 
 dependencies {

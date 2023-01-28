@@ -1,4 +1,4 @@
-package com.aregyan.compose.ui.currencyConverter
+package com.aregyan.currencyexchange.ui.currencyConverter
 
 import androidx.annotation.StringRes
 

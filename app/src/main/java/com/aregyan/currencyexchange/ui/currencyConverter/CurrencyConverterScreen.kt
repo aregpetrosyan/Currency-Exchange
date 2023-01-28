@@ -1,4 +1,4 @@
-package com.aregyan.compose.ui.currencyConverter
+package com.aregyan.currencyexchange.ui.currencyConverter
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -25,12 +25,12 @@ import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.aregyan.compose.R
-import com.aregyan.compose.ui.components.NoNetwork
-import com.aregyan.compose.ui.theme.AmountGreen
-import com.aregyan.compose.ui.theme.Green
-import com.aregyan.compose.ui.theme.Red
-import com.aregyan.compose.util.LifecycleEventHandler
+import com.aregyan.currencyexchange.R
+import com.aregyan.currencyexchange.ui.components.NoNetwork
+import com.aregyan.currencyexchange.ui.theme.AmountGreen
+import com.aregyan.currencyexchange.ui.theme.Green
+import com.aregyan.currencyexchange.ui.theme.Red
+import com.aregyan.currencyexchange.util.LifecycleEventHandler
 
 @Composable
 fun CurrencyConverterScreen() {

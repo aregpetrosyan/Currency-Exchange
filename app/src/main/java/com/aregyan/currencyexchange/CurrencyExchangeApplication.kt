@@ -1,4 +1,4 @@
-package com.aregyan.compose
+package com.aregyan.currencyexchange
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

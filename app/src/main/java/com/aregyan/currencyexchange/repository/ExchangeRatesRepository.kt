@@ -1,7 +1,7 @@
-package com.aregyan.compose.repository
+package com.aregyan.currencyexchange.repository
 
-import com.aregyan.compose.network.ExchangeRatesApi
-import com.aregyan.compose.network.model.ExchangeRatesApiModel
+import com.aregyan.currencyexchange.network.ExchangeRatesApi
+import com.aregyan.currencyexchange.network.model.ExchangeRatesApiModel
 import timber.log.Timber
 import javax.inject.Inject
 

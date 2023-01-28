@@ -1,4 +1,4 @@
-package com.aregyan.compose.network.model
+package com.aregyan.currencyexchange.network.model
 
 
 import com.squareup.moshi.Json

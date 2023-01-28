@@ -1,14 +1,14 @@
-package com.aregyan.compose.ui.currencyConverter
+package com.aregyan.currencyexchange.ui.currencyConverter
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
-import com.aregyan.compose.R
-import com.aregyan.compose.network.model.ExchangeRatesApiModel
-import com.aregyan.compose.repository.ExchangeRatesRepository
-import com.aregyan.compose.util.format
+import com.aregyan.currencyexchange.R
+import com.aregyan.currencyexchange.network.model.ExchangeRatesApiModel
+import com.aregyan.currencyexchange.repository.ExchangeRatesRepository
+import com.aregyan.currencyexchange.util.format
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest

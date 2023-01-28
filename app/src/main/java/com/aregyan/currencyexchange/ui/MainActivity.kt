@@ -1,9 +1,9 @@
-package com.aregyan.compose.ui
+package com.aregyan.currencyexchange.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.aregyan.compose.ui.theme.CurrencyExchangeTheme
+import com.aregyan.currencyexchange.ui.theme.CurrencyExchangeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

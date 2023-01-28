@@ -1,7 +1,7 @@
-package com.aregyan.compose.di
+package com.aregyan.currencyexchange.di
 
-import com.aregyan.compose.BuildConfig
-import com.aregyan.compose.network.ExchangeRatesApi
+import com.aregyan.currencyexchange.BuildConfig
+import com.aregyan.currencyexchange.network.ExchangeRatesApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

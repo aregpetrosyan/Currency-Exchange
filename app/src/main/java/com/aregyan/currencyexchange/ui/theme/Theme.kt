@@ -1,4 +1,4 @@
-package com.aregyan.compose.ui.theme
+package com.aregyan.currencyexchange.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

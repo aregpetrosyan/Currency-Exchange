@@ -1,4 +1,4 @@
-package com.aregyan.compose.util
+package com.aregyan.currencyexchange.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
