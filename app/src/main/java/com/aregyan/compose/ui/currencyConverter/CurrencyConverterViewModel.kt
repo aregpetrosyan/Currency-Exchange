@@ -8,6 +8,7 @@ import androidx.lifecycle.*
 import com.aregyan.compose.R
 import com.aregyan.compose.network.model.ExchangeRatesApiModel
 import com.aregyan.compose.repository.ExchangeRatesRepository
+import com.aregyan.compose.util.format
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
@@ -164,8 +165,6 @@ class CurrencyConverterViewModel @Inject constructor(
             dialogParams = params
         )
     }
-
-    private fun Double.format() = String.format("%.2f", this)
 
     companion object {
         private const val COMMISSION_FEE = 0.007 // 0.7%

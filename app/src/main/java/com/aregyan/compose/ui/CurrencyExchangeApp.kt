@@ -7,7 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.aregyan.compose.ui.currencyConverter.CurrencyConverterScreen
 
 @Composable
-fun ComposeApp() {
+fun CurrencyExchangeApp() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
