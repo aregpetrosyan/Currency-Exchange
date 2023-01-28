@@ -15,7 +15,6 @@ fun LifecycleEventHandler(
     val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
     DisposableEffect(lifecycleOwner.value) {
         val lifecycle = lifecycleOwner.value.lifecycle
-        // Create an observer that triggers our remembered callbacks
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_RESUME -> {
@@ -28,10 +27,8 @@ fun LifecycleEventHandler(
             }
         }
 
-        // Add the observer to the lifecycle
         lifecycle.addObserver(observer)
 
-        // When the effect leaves the Composition, remove the observer
         onDispose {
             lifecycle.removeObserver(observer)
         }
