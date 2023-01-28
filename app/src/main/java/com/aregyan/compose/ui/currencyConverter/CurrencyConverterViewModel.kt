@@ -116,8 +116,14 @@ class CurrencyConverterViewModel @Inject constructor(
     private fun handleResponse(exchangeRatesApiModel: ExchangeRatesApiModel?) {
         exchangeRatesList = exchangeRatesApiModel?.rates?.toMutableMap() ?: mutableMapOf()
         exchangeRatesList["EUR"] = 1.0
+        if (exchangeRatesApiModel == null) {
+            uiState = uiState.copy(offline = true)
+            return
+        } else {
+            uiState = uiState.copy(offline = false)
+        }
         if (initialValuesNotSet) {
-            currencyList = exchangeRatesApiModel?.rates?.map { it.key } ?: listOf()
+            currencyList = exchangeRatesApiModel.rates.map { it.key }
 
             currencyList.forEach {
                 if (it == "EUR") {
@@ -127,15 +133,11 @@ class CurrencyConverterViewModel @Inject constructor(
                 }
             }
 
-            uiState = if (exchangeRatesApiModel == null) {
-                uiState.copy(offline = true)
-            } else {
-                uiState.copy(
-                    balanceList = balanceList,
-                    sellCurrencyList = currencyList,
-                    receiveCurrencyList = currencyList
-                )
-            }
+            uiState = uiState.copy(
+                balanceList = balanceList,
+                sellCurrencyList = currencyList,
+                receiveCurrencyList = currencyList
+            )
             initialValuesNotSet = false
         }
     }
