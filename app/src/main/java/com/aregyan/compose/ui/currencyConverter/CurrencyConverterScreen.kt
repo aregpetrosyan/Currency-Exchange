@@ -26,11 +26,11 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aregyan.compose.R
-import com.aregyan.compose.ui.components.LifecycleEventHandler
 import com.aregyan.compose.ui.components.NoNetwork
 import com.aregyan.compose.ui.theme.AmountGreen
 import com.aregyan.compose.ui.theme.Green
 import com.aregyan.compose.ui.theme.Red
+import com.aregyan.compose.util.LifecycleEventHandler
 
 @Composable
 fun CurrencyConverterScreen() {

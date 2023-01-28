@@ -1,4 +1,4 @@
-package com.aregyan.compose.ui.components
+package com.aregyan.compose.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
